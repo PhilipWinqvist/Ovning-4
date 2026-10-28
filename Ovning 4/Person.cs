@@ -1,0 +1,89 @@
+﻿using System;
+
+namespace PersonLab
+{
+    public class Person
+    {
+        // Privata fält (inkapsling)
+        private string firstName;
+        private string lastName;
+        private int age;
+        private decimal salary;
+
+        // Konstruktor: går via properties så att valideringen alltid körs
+        public Person(string firstName, string lastName, int age, decimal salary)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            Age = age;
+            Salary = salary;
+        }
+
+        public string FirstName
+        {
+            get { return this.firstName; }
+            private set
+            {
+                if (value == null || value.Length < 3)
+                {
+                    throw new ArgumentException("First name cannot contain fewer than 3 symbols!");
+                }
+                this.firstName = value;
+            }
+        }
+
+        public string LastName
+        {
+            get { return this.lastName; }
+            private set
+            {
+                if (value == null || value.Length < 3)
+                {
+                    throw new ArgumentException("Last name cannot contain fewer than 3 symbols!");
+                }
+                this.lastName = value;
+            }
+        }
+
+        public int Age
+        {
+            get { return this.age; }
+            private set
+            {
+                if (value <= 0)
+                {
+                    throw new ArgumentException("Age cannot be zero or a negative integer!");
+                }
+                this.age = value;
+            }
+        }
+
+        public decimal Salary
+        {
+            get { return this.salary; }
+            private set
+            {
+                if (value < 460.0m)
+                {
+                    throw new ArgumentException("Salary cannot be less than 460 dollars!");
+                }
+                this.salary = value;
+            }
+        }
+
+        // Personer under 30 får halva ökningen
+        public void IncreaseSalary(decimal percentage)
+        {
+            if (this.Age < 30)
+            {
+                percentage = percentage / 2;
+            }
+            this.Salary += this.Salary * percentage / 100;
+        }
+
+        public override string ToString()
+        {
+            return $"{this.FirstName} {this.LastName} receives {this.Salary:F2} dollars.";
+        }
+    }
+}
